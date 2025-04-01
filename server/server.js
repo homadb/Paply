@@ -1,6 +1,9 @@
 const app = require('./app');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const resumeRoutes = require("./routes/resume");
+app.use("/api/resume", resumeRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 

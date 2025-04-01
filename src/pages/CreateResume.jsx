@@ -17,6 +17,34 @@ const CreateResume = () => {
     }));
   };
 
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      console.log("Sending form data:", formData);
+      console.log("Token:", token);
+
+      const res = await fetch("http://localhost:5000/api/resume/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("✅ Resume saved successfully!");
+      } else {
+        alert("❌ Error: " + data.message);
+      }
+    } catch (err) {
+      console.error("Save error:", err);
+      alert("❌ Server error");
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row gap-6">
       {/* Resume Form */}
@@ -33,7 +61,9 @@ const CreateResume = () => {
             className="w-full p-3 border rounded"
           />
         ))}
-        <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        <button
+          onClick={handleSave}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
           Save Resume
         </button>
       </div>
