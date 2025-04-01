@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { registerUser } from "../api/auth"; // Make sure this file exists
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,9 @@ const Register = () => {
     password: ""
   });
 
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -14,10 +18,19 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Registering:", formData);
-    // Later we'll connect to backend here
+    setError("");
+    setSuccess("");
+
+    const result = await registerUser(formData);
+
+    if (result.success) {
+      setSuccess("🎉 Registration successful!");
+      setFormData({ name: "", email: "", password: "" });
+    } else {
+      setError(result.data.message || "Something went wrong");
+    }
   };
 
   return (
@@ -55,6 +68,10 @@ const Register = () => {
           Sign Up
         </button>
       </form>
+
+      {/* Feedback Messages */}
+      {error && <p className="text-red-500 mt-4">{error}</p>}
+      {success && <p className="text-green-600 mt-4">{success}</p>}
     </div>
   );
 };
