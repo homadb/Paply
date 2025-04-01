@@ -23,7 +23,8 @@ function App() {
               <Route path="/resumes" element={<MyResumes />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/create" element={<PrivateRoute> <CreateResume /> </PrivateRoute>}/>
+              <Route path="/create" element={<PrivateRoute> <CreateResume /> </PrivateRoute>} />
+              <Route path="/resumes" element={<PrivateRoute> <MyResumes /> </PrivateRoute>} />
             </Routes>
           </main>
         </div>

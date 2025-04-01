@@ -32,4 +32,15 @@ router.post("/create", verifyToken, async (req, res) => {
   }
 });
 
+// GET /api/resume/mine
+router.get("/mine", verifyToken, async (req, res) => {
+  try {
+    const resumes = await Resume.find({ userId: req.userId }).sort({ createdAt: -1 });
+    res.status(200).json(resumes);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch resumes", error: err.message });
+  }
+});
+
+
 module.exports = router;
