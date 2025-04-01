@@ -6,6 +6,7 @@ import CreateResume from "./pages/CreateResume";
 import MyResumes from "./pages/MyResumes";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (

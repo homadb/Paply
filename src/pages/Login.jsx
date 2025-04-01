@@ -1,10 +1,18 @@
+console.log("Login component loaded!");
+
 import { useState } from "react";
+import { loginUser } from "../api/auth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -13,10 +21,20 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging in:", formData);
-    // Connect to backend here later
+    setError("");
+    setSuccess("");
+
+    const result = await loginUser(formData);
+
+    if (result.success) {
+      setSuccess("🎉 Login successful!");
+      localStorage.setItem("token", result.data.token);
+      setTimeout(() => navigate("/dashboard"), 1000);
+    } else {
+      setError(result.data.message || "Login failed");
+    }
   };
 
   return (
@@ -41,10 +59,17 @@ const Login = () => {
           className="w-full p-3 border rounded"
           required
         />
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+        >
           Log In
         </button>
       </form>
+
+      {/* Feedback */}
+      {error && <p className="text-red-500 mt-4">{error}</p>}
+      {success && <p className="text-green-600 mt-4">{success}</p>}
     </div>
   );
 };
