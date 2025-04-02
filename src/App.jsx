@@ -25,6 +25,9 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/create" element={<PrivateRoute> <CreateResume /> </PrivateRoute>} />
               <Route path="/resumes" element={<PrivateRoute> <MyResumes /> </PrivateRoute>} />
+              <Route path="/edit/:id" element={<PrivateRoute> <EditResume /> </PrivateRoute>}/>
+
+
             </Routes>
           </main>
         </div>

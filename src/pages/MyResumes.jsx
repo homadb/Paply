@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MyResumes = () => {
   const [resumes, setResumes] = useState([]);
@@ -73,6 +74,10 @@ const MyResumes = () => {
               Created: {new Date(resume.createdAt).toLocaleString()}
             </p>
             <button onClick={() => handleDelete(resume._id)} className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
+            <button onClick={() => navigate(`/edit/${resume._id}`)} className="absolute top-2 right-24 bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Edit</button>
+
+
+          
           </div>
         ))
       )}
