@@ -76,5 +76,24 @@ router.get("/:id", verifyToken, async (req, res) => {
   }
 });
 
+// PUT /api/resume/:id
+router.put("/:id", verifyToken, async (req, res) => {
+  try {
+    const updated = await Resume.findOneAndUpdate(
+      { _id: req.params.id, userId: req.userId },
+      req.body,
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: "Resume not found" });
+    }
+
+    res.status(200).json(updated);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update resume", error: err.message });
+  }
+});
+
 
 module.exports = router;

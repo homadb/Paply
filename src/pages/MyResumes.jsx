@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 const MyResumes = () => {
   const [resumes, setResumes] = useState([]);
 
+  const navigate = useNavigate();
+
   const handleDelete = async (id) => {
     const confirm = window.confirm("Are you sure you want to delete this resume?");
     if (!confirm) return;
@@ -32,7 +34,6 @@ const MyResumes = () => {
     }
   };
   
-
   const fetchResumes = async () => {
     try {
       const token = localStorage.getItem("token");
