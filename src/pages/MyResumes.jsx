@@ -3,6 +3,35 @@ import { useEffect, useState } from "react";
 const MyResumes = () => {
   const [resumes, setResumes] = useState([]);
 
+  const handleDelete = async (id) => {
+    const confirm = window.confirm("Are you sure you want to delete this resume?");
+    if (!confirm) return;
+  
+    try {
+      const token = localStorage.getItem("token");
+  
+      const res = await fetch(`http://localhost:5000/api/resume/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      const data = await res.json();
+      if (res.ok) {
+        alert("🗑️ Resume deleted");
+        // Remove it from local state
+        setResumes((prev) => prev.filter((r) => r._id !== id));
+      } else {
+        alert("❌ Error: " + data.message);
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("❌ Server error");
+    }
+  };
+  
+
   const fetchResumes = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -43,6 +72,7 @@ const MyResumes = () => {
             <p className="text-sm text-gray-500 mt-1">
               Created: {new Date(resume.createdAt).toLocaleString()}
             </p>
+            <button onClick={() => handleDelete(resume._id)} className="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
           </div>
         ))
       )}

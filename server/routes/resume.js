@@ -42,5 +42,24 @@ router.get("/mine", verifyToken, async (req, res) => {
   }
 });
 
+// DELETE /api/resume/:id
+router.delete("/:id", verifyToken, async (req, res) => {
+  try {
+    const result = await Resume.deleteOne({
+      _id: req.params.id,
+      userId: req.userId, // ensure user can only delete their own
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: "Resume not found or not allowed" });
+    }
+
+    res.status(200).json({ message: "Resume deleted" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to delete resume", error: err.message });
+  }
+});
+
+
 
 module.exports = router;
