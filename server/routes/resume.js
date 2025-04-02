@@ -60,6 +60,21 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
+// GET /api/resume/:id
+router.get("/:id", verifyToken, async (req, res) => {
+  try {
+    const resume = await Resume.findOne({
+      _id: req.params.id,
+      userId: req.userId, // security check
+    });
+
+    if (!resume) return res.status(404).json({ message: "Resume not found" });
+
+    res.status(200).json(resume);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch resume", error: err.message });
+  }
+});
 
 
 module.exports = router;
